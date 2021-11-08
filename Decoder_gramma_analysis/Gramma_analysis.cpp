@@ -1,11 +1,15 @@
 #include "Gramma_analysis.h"
 
-void Gramma_analysis::Analysis_start()
+bool Gramma_analysis::Analysis_start()
 {
 	lexical_.Read_line();
 	lexical_.analysis_word();
 
-	
+	if(!lexical_.error_list.empty())
+	{
+		error_log.push_back(LEXICAL_FAIL);
+		return false;
+	}
 	
 	words = lexical_.words;
 	types = lexical_.types;
@@ -15,6 +19,7 @@ void Gramma_analysis::Analysis_start()
 
 	stack_.push("$");
 	stack_.push("E");
+	return true;
 }
 
 void Gramma_analysis::Analysis()
@@ -35,7 +40,8 @@ void Gramma_analysis::Analysis()
 			}
 			else
 			{
-				error();
+				error(1);
+				return;
 			}
 		}
 		if (get_not_terminal(now) != -1)//·ÇÖÕ½á·û
@@ -65,7 +71,8 @@ void Gramma_analysis::Analysis()
 			}
 			else
 			{
-				error();
+				error(0);
+				return;
 			}
 		}
 	}
@@ -116,9 +123,10 @@ int Gramma_analysis::get_terminal(string now)
 	return -1;
 }
 
-void Gramma_analysis::error()
+void Gramma_analysis::error(int mode)
 {
-	
+	if (mode) error_log.push_back(MATCH_FAIL);
+	else error_log.push_back(NOT_END_SYNCH);
 }
 void Gramma_analysis::print_word()
 {

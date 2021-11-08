@@ -5,7 +5,11 @@
 class Gramma_analysis
 {
 private:
-#define MATCH_SUCCESS "匹配成功!"
+	#define MATCH_SUCCESS "匹配成功!"
+
+	#define LEXICAL_FAIL "出现错误字符"
+	#define MATCH_FAIL "匹配错误"
+	#define NOT_END_SYNCH "对应预测分析表为空"
 	
 	Lexical_analysis lexical_;
 	First_Follow first_follow_;
@@ -19,7 +23,9 @@ private:
 
 	stack <string> stack_;
 public:
-	void Analysis_start();
+	vector <string> error_log;
+	
+	bool Analysis_start();
 	void Analysis();
 
 	void print_answer();
@@ -30,6 +36,5 @@ public:
 
 	void push_out();
 
-	void error();
+	void error(int);
 };
-
