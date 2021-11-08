@@ -4,7 +4,12 @@ void Gramma_analysis::Analysis_start()
 {
 	lexical_.Read_line();
 	lexical_.analysis_word();
+
+	
+	
 	words = lexical_.words;
+	types = lexical_.types;
+	types.push_back("$");
 
 	first_follow_.Get_Forecast();
 
@@ -14,36 +19,47 @@ void Gramma_analysis::Analysis_start()
 
 void Gramma_analysis::Analysis()
 {
-	string now = stack_.top();
-	stack_.top();
-
+	string now;
+	
 	while(!stack_.empty())
 	{
-		if (get_terminal(now) != -1)
+		now = stack_.top();
+		if (get_terminal(now) != -1)//终结符
 		{
-			if(words[0] == now)
+			if(types[0] == now)
 			{
-				words.erase(words.begin());
+				types.erase(types.begin());
+				push_out();
+				stack_.pop();
+				answer.push_back(MATCH_SUCCESS);
 			}
 			else
 			{
 				error();
 			}
 		}
-		if (get_not_terminal(now) != -1)
+		if (get_not_terminal(now) != -1)//非终结符
 		{
-			int word_number = get_terminal(words[0]);
+			int word_number = get_terminal(types[0]);
 			int now_number = get_not_terminal(now);
 			string generative = first_follow_.Forecast_Analysis_Table[now_number][word_number];
 			if (generative != "")
 			{
-				string now_answer = now + "=>" + generative;
-				answer.push_back(now_answer);
-				
 				vector <string> word = first_follow_.splitx(generative, " ");
 
+				string now_answer = now + "=>";
+				for(int i =0;i<word.size();i++)
+				{
+					now_answer += word[i];
+				}
+				answer.push_back(now_answer);
+
+				push_out();
+				stack_.pop();
+				
 				for (int i = word.size() - 1; i >= 0; i--)
 				{
+					if (word[i] == "ε") continue;
 					stack_.push(word[i]);
 				}
 			}
@@ -52,16 +68,32 @@ void Gramma_analysis::Analysis()
 				error();
 			}
 		}
-		now = stack_.top();
-		stack_.pop();
 	}
 }
 
 void Gramma_analysis::print_answer()
 {
-	for(int i =0;i<answer.size();i++)
+	int set_w_stack = stack_out[0].size(), set_w_word = word_out[0].size(),set_w_answer = answer[0].size();
+	for (int i = 1; i < answer.size(); i++)
 	{
-		cout << answer[i] << endl;
+		set_w_stack = set_w_stack > stack_out[i].size() ? set_w_stack : stack_out[i].size();
+		set_w_word = set_w_word > word_out[i].size() ? set_w_word : word_out[i].size();
+		set_w_answer = set_w_answer > answer[i].size() ? set_w_answer : answer[i].size();
+	}
+
+	cout << left << setw(set_w_stack) << "栈";
+	cout << "  ";
+	cout << left << setw(set_w_word) << "输入";
+	cout << "  ";
+	cout << left << setw(set_w_answer) << "输出" << endl;
+	
+	for (int i = 0; i < answer.size(); i++)
+	{
+		cout << left << setw(set_w_stack) << stack_out[i];
+		cout << "  ";
+		cout << left << setw(set_w_word) << word_out[i];
+		cout << "  ";
+		cout << left << setw(set_w_answer) << answer[i] << endl;
 	}
 	return;
 }
@@ -87,4 +119,38 @@ int Gramma_analysis::get_terminal(string now)
 void Gramma_analysis::error()
 {
 	
+}
+void Gramma_analysis::print_word()
+{
+	for (int i = 0; i < words.size(); i++)
+	{
+		cout << types[i] << " ";
+	}
+	cout << endl;
+}
+
+void Gramma_analysis::push_out()
+{
+	string stack_string = "";
+
+	stack <string> stack_temp;
+	while(!stack_.empty())
+	{
+		stack_temp.push(stack_.top());
+		stack_.pop();
+		stack_string = stack_temp.top() + stack_string;
+	}
+	while(!stack_temp.empty())
+	{
+		stack_.push(stack_temp.top());
+		stack_temp.pop();
+	}
+	stack_out.push_back(stack_string);
+
+	string word_string = "";
+	for (int i = 0; i < types.size(); i++)
+	{
+		word_string += types[i] + " ";
+	}
+	word_out.push_back(word_string);
 }

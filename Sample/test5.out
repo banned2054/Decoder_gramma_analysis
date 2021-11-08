@@ -1,0 +1,12 @@
+*****预测式子进行加工*****
+num+""num
+
+*****预测分析过程如下*****
+栈      输入     输出
+$E  num+""num  E->T#E
+$#ET  num+""num  T->F#T
+$#E#TF  num+""num  F->num
+$#E#Tnum  +""num  匹配成功
+$#E#T  +""num  #T->eps
+$#E  +""num  #E->+T#E
+$#ET+  ""num  匹配成功

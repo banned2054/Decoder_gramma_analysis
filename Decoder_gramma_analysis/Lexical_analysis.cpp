@@ -60,11 +60,6 @@ void Lexical_analysis::analysis_word()
 						break;
 					}
 					word.push_back(now_char);
-					if(is_letter(now_char))
-					{
-						state = 1;
-						break;
-					}
 					if(is_digit(now_char))
 					{
 						state = 2;
@@ -72,33 +67,11 @@ void Lexical_analysis::analysis_word()
 					}
 					switch (now_char)
 					{
-						case '<':
-						{
-							state = 8;
-							break;
-						}
-						case '>':
-						{
-							state = 9;
-							break;
-						}
-						case ':':
-						{
-							state = 10;
-							break;
-						}
 						case '/':
-						{
-							state = 11;
-							mark_line = i;
-							mark_position = j;
-							break;
-						}
-						case '=':
 						{
 							state = 0;
 							words.push_back(word);
-							types.push_back(IS_SYMBOL);
+							types.push_back(IS_DIVIDER);
 							break;
 						}
 						case '+':
@@ -136,55 +109,11 @@ void Lexical_analysis::analysis_word()
 							types.push_back(IS_RIGHT_BRACKET);
 							break;
 						}
-						case ';':
-						{
-							state = 0;
-							words.push_back(word);
-							types.push_back(IS_SYMBOL);
-							break;
-						}
-						case '\'':
-						{
-							state = 13;
-							mark_line = i;
-							mark_position = j;
-							break;
-						}
-						case '\"':
-						{
-							state = 14;
-							mark_line = i;
-							mark_position = j;
-							break;
-						}
 						default:
 						{
 							state = 15;
 							word.pop_back();
 							break;
-						}
-					}
-					break;
-				}
-				case 1:
-				{
-					if(is_letter(now_char)||is_digit(now_char))
-					{
-						state = 1;
-						word.push_back(now_char);
-					}
-					else
-					{
-						state = 0;
-						j--;
-						words.push_back(word);
-						if(is_keyword(word))
-						{
-							types.push_back(IS_KEYWORD);
-						}
-						else
-						{
-							types.push_back(IS_WORD);
 						}
 					}
 					break;
@@ -312,159 +241,22 @@ void Lexical_analysis::analysis_word()
 					}
 					break;
 				}
-				case 8:
-				{
-					state = 0;
-					switch(now_char)
-					{
-						case '=':
-						{
-							word.push_back(now_char);
-							break;
-						}
-						case '>':
-						{
-							word.push_back(now_char);
-							break;
-						}
-						default:
-						{
-							j--;
-							break;
-						}
-					}
-							types.push_back(IS_SYMBOL);
-							words.push_back(word);
-					break;
-				}
-				case 9:
-				{
-					if(now_char == '=')
-					{
-						word.push_back(now_char);
-					}
-					else
-					{
-						j--;
-					}
-					words.push_back(word);
-					types.push_back(IS_SYMBOL);
-					state = 0;
-					break;
-				}
-				case 10:
-				{
-					if(now_char == '=')
-					{
-						word.push_back(now_char);
-					}
-					else
-					{
-						j--;
-					}
-					state = 0;
-					words.push_back(word);
-					types.push_back(IS_SYMBOL);
-					break;
-				}
-				case 11:
-				{
-					if (now_char == '/') state = 16;
-					if (now_char == '*') state = 12;
-					else
-					{
-						j--;
-						state = 0;
-						words.push_back(word);
-						types.push_back(IS_DIVIDER);
-					}
-					break;
-				}
-				case 12:
-				{
-					if(now_char == '*')
-					{
-						if (j < line.size() - 1)
-						{
-							if (line[j + 1] == '/')
-							{
-								j++;
-								state = 0;
-							}
-						}
-					}
-					else state = 12;
-					break;
-				}
-				case 13:
-				{
-					if(now_char == '\\')
-					{
-						word.push_back(now_char);
-						word.push_back(line[j + 1]);
-						j += 2;
-					}
-					else
-					{
-						if (now_char == '\'')
-						{
-							word.push_back(now_char);
-							words.push_back(word);
-							types.push_back(IS_CHARACTER);
-							state = 0;
-						}
-						else
-						{
-							word.push_back(now_char);
-						}
-					}
-					break;
-				}
-				case 14:
-				{
-					if (now_char == '\\')
-					{
-						word.push_back(now_char);
-						word.push_back(line[j + 1]);
-						j += 2;
-					}
-					else
-					{
-						if (now_char == '\"')
-						{
-							word.push_back(now_char);
-							words.push_back(word);
-							types.push_back(IS_SENTENCE);
-							state = 0;
-						}
-						else
-						{
-							word.push_back(now_char);
-						}
-					}
-					break;
-				}
 				case 15:
 				{
 					error(i, --j, CHAR_ERROR);
 					state = 0;
 					break;
 				}
-				case 16:
+			}
+			if(j >= line.size()-1)
+			{
+				if (state >= 2 && state <= 7)
 				{
-					if (j == line.size() - 1) state = 0;
-					break;
+					words.push_back(word);
+					types.push_back(IS_NUMBER);
 				}
 			}
 		}
-	}
-	if(state == 12)
-	{
-		error(mark_line, mark_position, NOTE_NOT_MAP);
-	}
-	if(state == 13 ||state == 14)
-	{
-		error(mark_line, mark_position, QUOTATION_NOW_MAP);
 	}
 }
 
@@ -476,15 +268,6 @@ bool Lexical_analysis::is_digit(char character)
 bool Lexical_analysis::is_letter(char character)
 {
 	return ((character >= 'a') && (character <= 'z'))|| ((character >= 'A') && (character <= 'Z')) || character == '_';
-}
-
-bool Lexical_analysis::is_keyword(string word)
-{
-	for (int i = 0; i < KEYWORDS_SIZE; i++)
-	{
-		if (word == keywords[i]) return true;
-	}
-	return false;
 }
 
 char Lexical_analysis::is_space(int& j, string line)
@@ -526,16 +309,6 @@ void Lexical_analysis::error(int line_number, int position,int wrong_type)
 		case OPERATOR_ERROR:
 		{
 			wrong_reason += WRONG_OPERATOR;
-			break;
-		}
-		case NOTE_NOT_MAP:
-		{
-			wrong_reason += WRONG_NOTE;
-			break;
-		}
-		case QUOTATION_NOW_MAP:
-		{
-			wrong_reason += WRONG_QUOTATION;
 			break;
 		}
 	}

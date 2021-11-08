@@ -1,0 +1,29 @@
+*****预测式子进行加工*****
+(num+num)/num
+
+*****预测分析过程如下*****
+栈   输入   输出
+$E  (num+num)/num  E->T#E
+$#ET  (num+num)/num  T->F#T
+$#E#TF  (num+num)/num  F->(E)
+$#E#T)E(  num+num)/num  匹配成功
+$#E#T)E  num+num)/num  E->T#E
+$#E#T)#ET  num+num)/num  T->F#T
+$#E#T)#E#TF  num+num)/num  F->num
+$#E#T)#E#Tnum  +num)/num  匹配成功
+$#E#T)#E#T  +num)/num  #T->eps
+$#E#T)#E  +num)/num  #E->+T#E
+$#E#T)#ET+  num)/num  匹配成功
+$#E#T)#ET  num)/num  T->F#T
+$#E#T)#E#TF  num)/num  F->num
+$#E#T)#E#Tnum  )/num  匹配成功
+$#E#T)#E#T  )/num  #T->eps
+$#E#T)#E  )/num  #E->eps
+$#E#T)  /num  匹配成功
+$#E#T  /num  #T->/F#T
+$#E#TF/  num  匹配成功
+$#E#TF  num  F->num
+$#E#Tnum    匹配成功
+$#E#T    #T->eps
+$#E    #E->eps
+$    匹配成功

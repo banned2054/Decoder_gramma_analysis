@@ -15,7 +15,7 @@ using namespace std;
 
 #define IS_KEYWORD "keyword"
 #define IS_WORD "word"
-#define IS_NUMBER "number"
+#define IS_NUMBER "num"
 #define IS_SYMBOL "symblol"
 #define IS_CHARACTER "character"
 #define IS_SENTENCE "sentence"

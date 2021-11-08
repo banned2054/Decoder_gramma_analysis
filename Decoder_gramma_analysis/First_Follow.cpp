@@ -33,7 +33,7 @@ First_Follow::First_Follow()
 		terminal[3] = "/";
 		terminal[4] = "(";
 		terminal[5] = ")";
-		terminal[6] = "number";
+		terminal[6] = "num";
 		terminal[7] = "$";
 		terminal[8] = "null";
 	}
@@ -103,7 +103,7 @@ First_Follow::First_Follow()
 		mapping[TP].push_back("/ F T\'");
 		mapping[TP].push_back("null");
 		mapping[F].push_back("( E )");
-		mapping[F].push_back("number");
+		mapping[F].push_back("num");
 	}
 }
 
