@@ -9,7 +9,7 @@ private:
 
 	#define LEXICAL_FAIL "出现错误字符"
 	#define MATCH_FAIL "匹配错误"
-	#define NOT_END_SYNCH "对应预测分析表为空"
+	#define NOT_END_SYNCH "预测分析表对应位置为空"
 	
 	Lexical_analysis lexical_;
 	First_Follow first_follow_;

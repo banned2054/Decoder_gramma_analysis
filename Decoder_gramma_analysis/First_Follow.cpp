@@ -17,7 +17,7 @@ vector<string> First_Follow::splitx(const string& s, const string& spitter) {
 }
 First_Follow::First_Follow()
 {
-	/* Not Terminal */
+	/* 非终结符 */
 	{
 		not_terminal[E] = "E";
 		not_terminal[EP] = "E\'";
@@ -25,7 +25,8 @@ First_Follow::First_Follow()
 		not_terminal[TP] = "T\'";
 		not_terminal[F] = "F";
 	}
-	
+
+	/* 终结符 */
 	{
 		terminal[0] = "+";
 		terminal[1] = "-";
@@ -38,7 +39,7 @@ First_Follow::First_Follow()
 		terminal[8] = "null";
 	}
 	
-	/* First */
+	/* First集 */
 	{
 		{
 			first[E].push_back(4);
@@ -62,7 +63,7 @@ First_Follow::First_Follow()
 			first[F].push_back(6);
 		}
 	}
-	/* Follow */
+	/* Follow集 */
 	{
 		{
 			follow[E].push_back(6);
@@ -92,7 +93,8 @@ First_Follow::First_Follow()
 			follow[F].push_back(3);
 		}
 	}
-	
+
+	/* 生成式 */
 	{
 		mapping[E].push_back("T E\'");
 		mapping[EP].push_back("- T E\'");
@@ -107,7 +109,7 @@ First_Follow::First_Follow()
 	}
 }
 
-void First_Follow::Get_Forecast()
+void First_Follow::Get_Forecast()//生成预测分析表
 {
 	bool flag = false;
 	for (int i = 0; i < 5; i++)
@@ -117,7 +119,7 @@ void First_Follow::Get_Forecast()
 		{
 			flag = flag| Get_First(mapping[i][j],i);
 		}
-		if (flag)
+		if (flag)//生成式的FIRST集有ε
 		{
 			for (int j = 0; j < follow[i].size(); j++)
 			{
@@ -127,7 +129,7 @@ void First_Follow::Get_Forecast()
 		
 	}
 }
-bool First_Follow::Get_First(string now_mapping,int now_num)
+bool First_Follow::Get_First(string now_mapping,int now_num)//查询生成式的FIRST集
 {
 	bool flag = false;
 	vector <string> words = splitx(now_mapping, " ");//切割单词，求每个生成式的FIRST
@@ -153,12 +155,12 @@ bool First_Follow::Get_First(string now_mapping,int now_num)
 				break;
 			}
 		}
-		if (flag1 && !flag2)
+		if (flag1 && !flag2) //非终结符非空
 		{
 			flag = false;
 			break;
 		}
-		if (flag1 && flag2)
+		if (flag1 && flag2) //非终结符含空
 		{
 			flag = true;
 			continue;
@@ -177,7 +179,7 @@ bool First_Follow::Get_First(string now_mapping,int now_num)
 	return flag;
 }
 
-void First_Follow::Print_Forecast()
+void First_Follow::Print_Forecast() //打印预测分析表
 {
 	cout << "            ";
 	string out_="| "+terminal[0];

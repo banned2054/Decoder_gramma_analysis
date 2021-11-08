@@ -27,9 +27,6 @@ public:
 	vector <string> error_list;
 	
 	Lexical_analysis();
-	Lexical_analysis(string);
-	void Input_file_name(string);
-	void Read_file();
 	void Read_line();
 	void analysis_word();
 	void error(int, int, int);

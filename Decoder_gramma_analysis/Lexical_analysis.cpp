@@ -5,29 +5,7 @@ Lexical_analysis::Lexical_analysis()
 
 }
 
-Lexical_analysis::Lexical_analysis(string file_name)
-{
-	input_file_name = file_name;
-	input_file.open(file_name, ios::in);
-}
-
-void Lexical_analysis::Input_file_name(string file_name)
-{
-	input_file_name = file_name;
-	input_file.open(file_name);
-}
-
-void Lexical_analysis::Read_file()
-{
-	string line = "";
-	lines.clear();
-	while (getline(input_file, line))
-	{
-		lines.push_back(line);
-	}
-}
-
-void Lexical_analysis::Read_line()
+void Lexical_analysis::Read_line()//读取一行
 {
 	int max_lenght = 114514;
 	string line;
@@ -36,7 +14,7 @@ void Lexical_analysis::Read_line()
 	lines.push_back(line);
 }
 
-void Lexical_analysis::analysis_word()
+void Lexical_analysis::analysis_word()//以行为单位分析
 {
 	string line;
 	int state = 0;
@@ -248,7 +226,7 @@ void Lexical_analysis::analysis_word()
 					break;
 				}
 			}
-			if(j >= line.size()-1)
+			if (j >= line.size() - 1)//string没有'\0'所以得判断是否到行尾
 			{
 				if (state >= 2 && state <= 7)
 				{
@@ -260,17 +238,17 @@ void Lexical_analysis::analysis_word()
 	}
 }
 
-bool Lexical_analysis::is_digit(char character)
+bool Lexical_analysis::is_digit(char character)//判断是否是数字
 {
 	return (character >= '0') && (character <= '9');
 }
 
-bool Lexical_analysis::is_letter(char character)
+bool Lexical_analysis::is_letter(char character)//判断是否是字符
 {
 	return ((character >= 'a') && (character <= 'z'))|| ((character >= 'A') && (character <= 'Z')) || character == '_';
 }
 
-char Lexical_analysis::is_space(int& j, string line)
+char Lexical_analysis::is_space(int& j, string line)//跳过空格，超界直接结束
 {
 	char now = line[j];
 	while(now == ' ')
