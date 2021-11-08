@@ -135,6 +135,12 @@ void Gramma_analysis::print_word()//输出词法分析结果
 		cout << types[i] << " ";
 	}
 	cout << endl;
+
+	/*
+	 *cout << endl;
+	 *first_follow_.Print_Forecast();
+	 *cout << endl
+	 */
 }
 
 void Gramma_analysis::push_out()//保存每步的栈和输入字符的状态

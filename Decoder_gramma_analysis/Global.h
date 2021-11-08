@@ -13,13 +13,8 @@
 #include <iomanip>
 using namespace std;
 
-#define IS_KEYWORD "keyword"
-#define IS_WORD "word"
 #define IS_NUMBER "num"
 #define IS_SYMBOL "symblol"
-#define IS_CHARACTER "character"
-#define IS_SENTENCE "sentence"
-#define IS_EQUAL "equal"
 #define IS_ADDTION "+"
 #define IS_SUBTRATION "-"
 #define IS_MULTPLY "*"
