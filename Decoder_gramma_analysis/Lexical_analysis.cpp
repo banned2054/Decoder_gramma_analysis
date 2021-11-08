@@ -55,6 +55,10 @@ void Lexical_analysis::analysis_word()
 				{
 					word = "";
 					now_char = is_space(j, line);
+					if (j >= line.size())
+					{
+						break;
+					}
 					word.push_back(now_char);
 					if(is_letter(now_char))
 					{
@@ -488,7 +492,13 @@ char Lexical_analysis::is_space(int& j, string line)
 	char now = line[j];
 	while(now == ' ')
 	{
-		now = line[++j];
+		j++;
+		if (j >= line.size())
+		{
+			return ' ';
+		}
+		now = line[j];
+		
 	}
 	return now;
 }

@@ -9,6 +9,7 @@
 #include <fstream>
 #include <string>
 #include <map>
+#include <stack>
 #include <iomanip>
 using namespace std;
 

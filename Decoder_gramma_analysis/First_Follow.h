@@ -21,5 +21,6 @@ public:
 	bool Get_First(string,int);
 	void Print_Forecast();
 
+	vector<string> splitx(const string&, const string&);
 };
 

@@ -1,6 +1,6 @@
 #include "First_Follow.h"
 
-vector<string> splitx(const string& s, const string& spitter) {
+vector<string> First_Follow::splitx(const string& s, const string& spitter) {
 	vector<string> ret; // 1
 	int p1 = 0;
 	int p2;
@@ -115,35 +115,37 @@ void First_Follow::Get_Forecast()
 		flag = false;
 		for (int j = 0; j < mapping[i].size(); j++)//枚举生成式
 		{
-			Get_First(mapping[i][j],i);
+			flag = flag| Get_First(mapping[i][j],i);
 		}
-		for (int j = 0; j < first[i].size(); j++)
+		if (flag)
 		{
-			if(first[i][j] == 8)
+			for (int j = 0; j < follow[i].size(); j++)
 			{
-				for (int k = 0; k < follow[i].size(); k++)
-				{
-					Forecast_Analysis_Table[i][follow[i][k]] = "ε";
-				}
+				Forecast_Analysis_Table[i][follow[i][j]] = "ε";
 			}
 		}
+		
 	}
 }
 bool First_Follow::Get_First(string now_mapping,int now_num)
 {
 	bool flag = false;
 	vector <string> words = splitx(now_mapping, " ");//切割单词，求每个生成式的FIRST
+	if (words[0] == "null") return true;
 	for (int i = 0; i < words.size(); i++)
 	{
+		bool flag1 = false;
+		bool flag2 = false;
 		for (int j = 0; j < 5; j++)//如果首部是非终结符
 		{
 			if(words[i] == not_terminal[j])
 			{
+				flag1 = true;
 				for (int k = 0; k < first[j].size(); k++)
 				{
 					if (first[j][k] == 8)//非终结符的FIRST有空集
 					{
-						flag = true;
+						flag2 = true;
 						continue;
 					}
 					Forecast_Analysis_Table[now_num][first[j][k]] = now_mapping;
@@ -151,10 +153,21 @@ bool First_Follow::Get_First(string now_mapping,int now_num)
 				break;
 			}
 		}
+		if (flag1 && !flag2)
+		{
+			flag = false;
+			break;
+		}
+		if (flag1 && flag2)
+		{
+			flag = true;
+			continue;
+		}
 		for (int j = 0; j < 8; j++)//如果首部是终结符
 		{
 			if(words[i] == terminal[j])
 			{
+				flag = false;
 				Forecast_Analysis_Table[now_num][j] = now_mapping;
 				break;
 			}

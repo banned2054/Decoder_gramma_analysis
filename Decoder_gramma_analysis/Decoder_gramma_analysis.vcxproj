@@ -141,10 +141,12 @@
   <ItemGroup>
     <ClInclude Include="First_Follow.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="Gramma_analysis.h" />
     <ClInclude Include="Lexical_analysis.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="First_Follow.cpp" />
+    <ClCompile Include="Gramma_analysis.cpp" />
     <ClCompile Include="Lexical_analysis.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

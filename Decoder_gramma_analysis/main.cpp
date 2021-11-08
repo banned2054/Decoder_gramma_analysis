@@ -1,8 +1,9 @@
-#include "Lexical_analysis.h"
-#include "First_Follow.h"
+#include "Gramma_analysis.h"
+
 int main()
 {
-	First_Follow first_follow;
-	first_follow.Get_Forecast();
-	first_follow.Print_Forecast();
+	Gramma_analysis gramma_analysis;
+	gramma_analysis.Analysis_start();
+	gramma_analysis.Analysis();
+	gramma_analysis.print_answer();
 }
