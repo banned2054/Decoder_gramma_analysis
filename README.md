@@ -82,19 +82,19 @@ gcc version 8.1.0
 
 ​		再将次表写入到程序中，通过算法1，生成对应的预测分析表：
 
-![image-20211108173110054](C:\Users\18010\AppData\Roaming\Typora\typora-user-images\image-20211108173110054.png)
+![image-20211108173110054](https://raw.githubusercontent.com/banned2054/Picture_online/main/image-20211108173110054.png)
 
 ​		通过算法2，对分析式进行预测分析，并记录下每一步的栈状态，输入字符串状态和输出结果。
 
 ### 程序结构
 
-![image-20211108173352442](C:\Users\18010\AppData\Roaming\Typora\typora-user-images\image-20211108173352442.png)
+![image-20211108173352442](https://raw.githubusercontent.com/banned2054/Picture_online/main/image-20211108173352442.png)
 
 ​		其中，`Gramma_analysis`是用来封装文法分析的类，`First_Follow`是用来封装First集和Follow集、以及预测分析表相关的类，`Lexical_analysis`是封装词法分析的类，`Global.h`用来保存调用的头文件和全部定量。
 
 ### 函数调用
 
-![image-20211108174709760](C:\Users\18010\AppData\Roaming\Typora\typora-user-images\image-20211108174709760.png)
+![image-20211108174709760](https://raw.githubusercontent.com/banned2054/Picture_online/main/image-20211108174709760.png)
 
 |         类         |       函数名        |                         函数功能                         |
 | :----------------: | :-----------------: | :------------------------------------------------------: |
@@ -296,7 +296,7 @@ if (get_not_terminal(now) != -1)//非终结符
 
 ​		正常运行。
 
-![image-20211108192213387](C:\Users\18010\AppData\Roaming\Typora\typora-user-images\image-20211108192213387.png)
+![image-20211108192213387](https://raw.githubusercontent.com/banned2054/Picture_online/main/image-20211108192213387.png)
 
 ### 测试数据2
 
@@ -312,7 +312,7 @@ if (get_not_terminal(now) != -1)//非终结符
 
 ​		词法分析正确，输出词法分析结果，但语法分析错误
 
-![image-20211108194136603](C:\Users\18010\AppData\Roaming\Typora\typora-user-images\image-20211108194136603.png)
+![image-20211108194136603](https://raw.githubusercontent.com/banned2054/Picture_online/main/image-20211108194136603.png)
 
 ### 测试数据3
 
@@ -328,7 +328,7 @@ if (get_not_terminal(now) != -1)//非终结符
 
 ​		正常运行，正确识别数字
 
-![image-20211108192457047](C:\Users\18010\AppData\Roaming\Typora\typora-user-images\image-20211108192457047.png)
+![image-20211108192457047](https://raw.githubusercontent.com/banned2054/Picture_online/main/image-20211108192457047.png)
 
 ### 测试数据4
 
@@ -344,7 +344,7 @@ if (get_not_terminal(now) != -1)//非终结符
 
 ​		检测到预测分析表为空的部分的式子，直接报错结束程序。
 
-![image-20211108193110141](C:\Users\18010\AppData\Roaming\Typora\typora-user-images\image-20211108193110141.png)
+![image-20211108193110141](https://raw.githubusercontent.com/banned2054/Picture_online/main/image-20211108193110141.png)
 
 ### 测试数据5
 
@@ -360,4 +360,4 @@ if (get_not_terminal(now) != -1)//非终结符
 
 ​		直接报错，报错内容为词法分析错误
 
-![image-20211108193828127](C:\Users\18010\AppData\Roaming\Typora\typora-user-images\image-20211108193828127.png)
+![image-20211108193828127](https://raw.githubusercontent.com/banned2054/Picture_online/main/image-20211108193828127.png)
