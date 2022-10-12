@@ -2,7 +2,7 @@
 
 bool Gramma_analysis::Analysis_start()//初始化，进行词法分析和预测分析表的生成
 {
-	lexical_.Read_line();
+	lexical_.read_line();
 	lexical_.analysis_word();
 
 	if(!lexical_.error_list.empty())//词法分析出错，直接结束
