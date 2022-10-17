@@ -1,13 +1,14 @@
 #include "First_Follow.h"
 
-vector<string> First_Follow::splitx(const string& s, const string& spitter) {
+vector<string> First_Follow::splitx(const string& s, const string& spitter)
+{
 	vector<string> ret; // 1
-	int p1 = 0;
-	int p2;
-	int len = spitter.size();
+	int p1   = 0;
+	int len  = spitter.size();
 	int slen = s.size();
-	while (true) {
-		p2 = s.find(spitter, p1);
+	while (true)
+	{
+		int p2 = s.find(spitter, p1);
 		if (p2 == string::npos) p2 = slen;
 		ret.push_back(s.substr(p1, p2 - p1));
 		p1 = p2 + len;
@@ -15,15 +16,16 @@ vector<string> First_Follow::splitx(const string& s, const string& spitter) {
 	}
 	return ret;
 }
+
 First_Follow::First_Follow()
 {
 	/* ·ÇÖÕ½á·û */
 	{
-		not_terminal[E] = "E";
+		not_terminal[E]  = "E";
 		not_terminal[EP] = "E\'";
-		not_terminal[T] = "T";
+		not_terminal[T]  = "T";
 		not_terminal[TP] = "T\'";
-		not_terminal[F] = "F";
+		not_terminal[F]  = "F";
 	}
 
 	/* ÖÕ½á·û */
@@ -38,7 +40,7 @@ First_Follow::First_Follow()
 		terminal[7] = "$";
 		terminal[8] = "null";
 	}
-	
+
 	/* First¼¯ */
 	{
 		{
@@ -96,61 +98,63 @@ First_Follow::First_Follow()
 
 	/* Éú³ÉÊ½ */
 	{
-		mapping[E].push_back("T E\'");
-		mapping[EP].push_back("- T E\'");
-		mapping[EP].push_back("+ T E\'");
-		mapping[EP].push_back("null");
-		mapping[T].push_back("F T\'");
-		mapping[TP].push_back("* F T\'");
-		mapping[TP].push_back("/ F T\'");
-		mapping[TP].push_back("null");
-		mapping[F].push_back("( E )");
-		mapping[F].push_back("num");
+		mapping[E].emplace_back("T E\'");
+		mapping[EP].emplace_back("- T E\'");
+		mapping[EP].emplace_back("+ T E\'");
+		mapping[EP].emplace_back("null");
+		mapping[T].emplace_back("F T\'");
+		mapping[TP].emplace_back("* F T\'");
+		mapping[TP].emplace_back("/ F T\'");
+		mapping[TP].emplace_back("null");
+		mapping[F].emplace_back("( E )");
+		mapping[F].emplace_back("num");
 	}
 }
 
-void First_Follow::Get_Forecast()//Éú³ÉÔ¤²â·ÖÎö±í
+void First_Follow::Get_Forecast() //Éú³ÉÔ¤²â·ÖÎö±í
 {
 	bool flag = false;
 	for (int i = 0; i < 5; i++)
 	{
 		flag = false;
-		for (int j = 0; j < mapping[i].size(); j++)//Ã¶¾ÙÉú³ÉÊ½
+		for (int j = 0; j < mapping[i].size(); j++) //Ã¶¾ÙÉú³ÉÊ½
 		{
-			flag = flag| Get_First(mapping[i][j],i);
+			flag = flag | Get_First(mapping[i][j], i);
 		}
-		if (flag)//Éú³ÉÊ½µÄFIRST¼¯ÓÐ¦Å
+		if (flag) //Éú³ÉÊ½µÄFIRST¼¯ÓÐ¦Å
 		{
 			for (int j = 0; j < follow[i].size(); j++)
 			{
 				Forecast_Analysis_Table[i][follow[i][j]] = "¦Å";
 			}
 		}
-		
 	}
 }
-bool First_Follow::Get_First(string now_mapping,int now_num)//²éÑ¯Éú³ÉÊ½µÄFIRST¼¯
+
+bool First_Follow::Get_First(string now_mapping, int now_num) //²éÑ¯Éú³ÉÊ½µÄFIRST¼¯
 {
 	bool flag = false;
-	vector <string> words = splitx(now_mapping, " ");//ÇÐ¸îµ¥´Ê£¬ÇóÃ¿¸öÉú³ÉÊ½µÄFIRST
+
+	vector<string> words = splitx(now_mapping, " "); //ÇÐ¸îµ¥´Ê£¬ÇóÃ¿¸öÉú³ÉÊ½µÄFIRST
+
 	if (words[0] == "null") return true;
-	for (int i = 0; i < words.size(); i++)
+	for (auto& word : words)
 	{
 		bool flag1 = false;
 		bool flag2 = false;
-		for (int j = 0; j < 5; j++)//Èç¹ûÊ×²¿ÊÇ·ÇÖÕ½á·û
+		for (int j = 0; j < 5; j++) //Èç¹ûÊ×²¿ÊÇ·ÇÖÕ½á·û
 		{
-			if(words[i] == not_terminal[j])
+			if (word == not_terminal[j])
 			{
 				flag1 = true;
-				for (int k = 0; k < first[j].size(); k++)
+				for (int k : first[j])
 				{
-					if (first[j][k] == 8)//·ÇÖÕ½á·ûµÄFIRSTÓÐ¿Õ¼¯
+					if (k == 8) //·ÇÖÕ½á·ûµÄFIRSTÓÐ¿Õ¼¯
 					{
 						flag2 = true;
 						continue;
 					}
-					Forecast_Analysis_Table[now_num][first[j][k]] = now_mapping;
+					Forecast_Analysis_Table[now_num][k] = now_mapping;
 				}
 				break;
 			}
@@ -165,16 +169,16 @@ bool First_Follow::Get_First(string now_mapping,int now_num)//²éÑ¯Éú³ÉÊ½µÄFIRST¼
 			flag = true;
 			continue;
 		}
-		for (int j = 0; j < 8; j++)//Èç¹ûÊ×²¿ÊÇÖÕ½á·û
+		for (int j = 0; j < 8; j++) //Èç¹ûÊ×²¿ÊÇÖÕ½á·û
 		{
-			if(words[i] == terminal[j])
+			if (word == terminal[j])
 			{
-				flag = false;
+				flag                                = false;
 				Forecast_Analysis_Table[now_num][j] = now_mapping;
 				break;
 			}
 		}
-		if (!flag) break;//Ê×²¿ÊÇ·ÇÖÕ½á·û£¬ÇÒFIRSTÓÐ¿Õ¼¯
+		if (!flag) break; //Ê×²¿ÊÇ·ÇÖÕ½á·û£¬ÇÒFIRSTÓÐ¿Õ¼¯
 	}
 	return flag;
 }
@@ -182,39 +186,39 @@ bool First_Follow::Get_First(string now_mapping,int now_num)//²éÑ¯Éú³ÉÊ½µÄFIRST¼
 void First_Follow::Print_Forecast() //´òÓ¡Ô¤²â·ÖÎö±í
 {
 	cout << "            ";
-	string out_="| "+terminal[0];
-	cout << std::left << setw(12)<<out_;
+	string out_ = "| " + terminal[0];
+	cout << std::left << setw(12) << out_;
 	for (int i = 1; i < 8; i++)
 	{
 		out_ = "| " + terminal[i];
-		cout << std::left << setw(12)<<out_;
+		cout << std::left << setw(12) << out_;
 	}
 	cout << endl;
-	
+
 	for (int i = 0; i < 5; i++)
 	{
 		out_ = "-";
-		cout << setfill('-') << setw(108) << out_<<endl;
+		cout << setfill('-') << setw(108) << out_ << endl;
 		out_ = "| " + not_terminal[i];
-		cout <<setfill(' ') << std::left << setw(12) << out_;
+		cout << setfill(' ') << std::left << setw(12) << out_;
 		for (int j = 0; j < 8; j++)
 		{
 			setfill(' ');
 			out_ = "| ";
-			if (Forecast_Analysis_Table[i][j] == "") 
+			if (Forecast_Analysis_Table[i][j].empty())
 			{
-				cout << std::left << setw(12)<<  out_;
+				cout << std::left << setw(12) << out_;
 				continue;
 			}
-			
-			vector <string> words = splitx(Forecast_Analysis_Table[i][j], " ");
-			string output = not_terminal[i]+"=>";
+
+			vector<string> words = splitx(Forecast_Analysis_Table[i][j], " ");
+			string output        = not_terminal[i] + "=>";
 			for (int k = 0; k < words.size(); k++)
 			{
 				output += words[k];
 			}
 			out_ += output;
-			cout << std::left << setw(12) <<out_;
+			cout << std::left << setw(12) << out_;
 		}
 		cout << endl;
 	}

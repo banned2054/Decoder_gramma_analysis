@@ -4,11 +4,10 @@
 class Lexical_analysis
 {
 private:
-	//#define KEYWORDS_SIZE 22
 
 #define NUMBER_ERROR_P 1
 #define NUMBER_ERROR_E 2
-#define CHAR_ERROR 3
+#define CHAR_ERROR     3
 #define OPERATOR_ERROR 4
 
 #define WRONG_CHAR			"There is a wrong character."
@@ -32,5 +31,5 @@ public:
 
 	bool is_letter(char);
 	bool is_digit(char);
-	char is_space(long long&, string);
+	char is_space(long long&, const string&);
 };

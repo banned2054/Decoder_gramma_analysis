@@ -13,15 +13,15 @@
 #include <iomanip>
 using namespace std;
 
-#define IS_NUMBER "num"
-#define IS_SYMBOL "symblol"
-#define IS_ADDTION "+"
-#define IS_SUBTRATION "-"
-#define IS_MULTPLY "*"
-#define IS_DIVIDER "/"
-#define IS_LEFT_BRACKET "("
-#define IS_RIGHT_BRACKET ")"
-#define IS_ERROR "error"
+#define IS_NUMBER			"num"
+#define IS_SYMBOL			"symblol"
+#define IS_ADDTION			"+"
+#define IS_SUBTRATION		"-"
+#define IS_MULTPLY			"*"
+#define IS_DIVIDER			"/"
+#define IS_LEFT_BRACKET		"("
+#define IS_RIGHT_BRACKET	")"
+#define IS_ERROR			"error"
 
 
 #define E 0
